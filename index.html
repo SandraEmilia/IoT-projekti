@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>TemperatureServer</title>
+    </head>
+    <body>
+        <h1>Palvelimen lämpötila-asetukset</h1>
+        <div>
+            <h3>Nykyinen lämpötila:</h3>
+            <p id="current-temp">Ladataan...</p>
+        </div>
+
+        <div>
+            <h3>Aseta uudet min/max lämpötilat:</h3>
+            <form id="settings-form">
+                Min: <input type="number" id="min-temp" required><br>
+                Max: <input type="number" id="max-temp" required><br>
+                <button type="submit">Päivitä asetukset</button>
+            </form>
+        </div>
+
+        <script>
+        async function fetchTemperature() {
+            const res = await fetch('/temperature');
+            const data = await res.json();
+            document.getElementById('current-temp').textContent = data.temperature + " °C";
+        }
+
+        async function fetchSettings() {
+            const res = await fetch('/settings');
+            const data = await res.json();
+            document.getElementById('min-temp').value = data.minTemperature;
+            document.getElementById('max-temp').value = data.maxTemperature;
+        }
+
+        document.getElementById('settings-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const min = document.getElementById('min-temp').value;
+        const max = document.getElementById('max-temp').value;
+
+        await fetch('/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ minTemperature: min, maxTemperature: max })
+        });
+
+        alert("Asetukset päivitetty!");
+        });
+
+        fetchTemperature();
+        fetchSettings();
+        </script>
+    </body>
+</html>

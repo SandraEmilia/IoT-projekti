@@ -1,0 +1,1 @@
+{"minTemperature":23,"maxTemperature":25}
