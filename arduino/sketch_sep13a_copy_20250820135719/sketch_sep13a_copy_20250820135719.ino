@@ -26,7 +26,7 @@ int minTemp = 0;
 int maxTemp = 100;
 
 // Palvelimen IP ja portti
-char serverAddress[] = "192.168.1.3";
+char serverAddress[] = "YOUR IP-ADDRESS";
 int port = 8080;
 WiFiClient wifiClient;
 HttpClient client = HttpClient(wifiClient, serverAddress, port);
